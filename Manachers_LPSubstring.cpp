@@ -20,6 +20,29 @@ using namespace std;
  
 
  */
+/*
+*/
+class LPS{
+    public:
+        string inputString;
+        bool CheckPalindrome();
+        string BruteForce_Longest_Palindromic_Substring();
+        string Longest_Palindromic_Substring_Dynamic();
+        string Longest_Palindromic_Substring_Manachers();
+};
+
+bool LPS::CheckPalindrome()
+{
+    int n=inputString.size();
+    for(int i=0;i<n;i++)
+    {
+        if(inputString[i]!=inputString[n-i-1])
+        return false;
+    }
+    return true;
+}
+
+
 string Manachers_Longest_Palindromic_Substring(string s)
 {
     int n=s.size();
@@ -61,7 +84,7 @@ string Manachers_Longest_Palindromic_Substring(string s)
         for(int i=currCenter+1;i<=currCenter+freq;i++)
         {
             //Completely lying under prevCenter Palindrome
-             
+
 
         }
     }

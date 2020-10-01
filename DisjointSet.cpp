@@ -6,7 +6,7 @@ On Creation of Disjoint set Lets look each step significantly
 2) Path Compression 
     Two logic for path compression
     1)Movement of parent pointer means in a group all have a same representative element
-    2)
+    
 */
 class Node
 {
@@ -18,7 +18,7 @@ class Node
         Node(int val)
         {
             data=val;
-            rank=0;
+            rank=1;
             parent=this;
 
         }
@@ -33,7 +33,8 @@ class DisjointSet
     public:    
         void CreateSet(int);
         void Union(int,int);
-        Node * FindParent(int);
+        Node * FindParent(Node *);
+        Node * FinNodeValue(int);
 };
 
 void DisjointSet::CreateSet(int node)
@@ -42,34 +43,43 @@ void DisjointSet::CreateSet(int node)
     mp[node]=p;
 }
 //Path compression is applicable here
-Node * DisjointSet::FindParent(int node)
+Node * DisjointSet::FindParent(Node *p)
 {
-    Node *p=mp[node];
+    //Node *p=mp[node];
 
-    if(p->data!=node)
+    if(p->parent==p)
     {
-        return mp[node]=FindParent(p->data);
+       return p;
     }
     else
     {
-        return p;
+        return p->parent=FindParent(p->parent);
     }
     
 }
+Node * DisjointSet::FinNodeValue(int x)
+{
+    return mp[x];
+}
 void DisjointSet::Union(int node1,int node2)
 {
-     Node *par1=FindParent(node1);
-     Node *par2=FindParent(node2);
+     Node *n1=mp[node1];
+     Node *n2=mp[node2];
+     Node *par1=FindParent(n1);
+     Node *par2=FindParent(n2);
 
      if(par1->rank<=par2->rank)
      {
-         mp[node1]=par2;
-         par2->rank+=1;
+        // mp[node1]=par2;
+
+         par2->rank+=par1->rank;
+         par1->parent=par2;
      }
      else if (par1->rank>par2->rank)
      {
-         mp[node2]=par1;
-         par1->rank+=1;
+         //mp[node2]=par1;
+         par1->rank+=par2->rank;
+         par2->parent=par1;
      }
 }
 
@@ -91,7 +101,7 @@ int main()
     for(int i=0;i<5;i++)
     {
         cin>>x>>y;
-        if(ds.FindParent(x)==ds.FindParent(y))
+        if(ds.FindParent(ds.FinNodeValue(x))==ds.FindParent(ds.FinNodeValue(y)))
         {
             cout<<"Same loop\n";
         }
